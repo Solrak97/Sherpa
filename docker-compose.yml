@@ -1,0 +1,27 @@
+services:
+  postgres:
+    image: postgres:15.3
+    container_name: sherpa-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: sherpa
+      POSTGRES_PASSWORD: sherpa
+      POSTGRES_DB: messy_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  qdrant:
+    image: qdrant/qdrant
+    container_name: sherpa-qdrant
+    restart: unless-stopped
+    ports:
+      - "6333:6333"   # REST API
+      - "6334:6334"   # gRPC (if you use it later)
+    volumes:
+      - qdrant_storage:/qdrant/storage
+
+volumes:
+  pgdata:
+  qdrant_storage:
